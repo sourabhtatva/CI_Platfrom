@@ -75,7 +75,7 @@ export class VolunteeringTimesheetComponent implements OnInit {
     this.deleteModal.hide();
   }
   MissionTitleList(){
-    this.service.MissionTitleList().subscribe((data:any)=>{
+    this.service.VolunteeringMissionList(this.loginUserId).subscribe((data:any)=>{
       if(data.result == 1)
       {
         this.missionList = data.data;

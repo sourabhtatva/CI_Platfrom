@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { user } from '../model/user.model';
 import {JwtHelperService} from  '@auth0/angular-jwt';
 @Injectable({
@@ -22,6 +22,15 @@ export class AdminloginService {
 
   registerUser(user:user){
       return this.http.post(`${this.apiUrl}/Register`,user,{responseType:'json'});
+  }
+
+  GetUserById(id: number): Observable<user[]> {
+    return this.http.get<user[]>(
+      `${this.apiUrl}/GetUserById/${id}`
+    );
+  }
+  UpdateUser(data: user) {
+    return this.http.post(`${this.apiUrl}/UpdateUser`, data);
   }
 
   loginUser(loginInfo:Array<string>){

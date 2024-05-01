@@ -56,14 +56,7 @@ export class LoginComponent implements OnInit {
               }
               else
               {
-                if(tokenpayload.userImage != ""){
-                  this.router.navigate(['/home']);
-                }
-                else
-                {
-                  this.toast.warning({detail:"Warning",summary:"First Fillup User Profile Detail",duration:3000});
-                  this.router.navigate([`userProfile/${tokenpayload.userId}`])
-                }
+                this.router.navigate(['/home']);
               }
 
             }

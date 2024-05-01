@@ -1,16 +1,24 @@
-.detail{
+.detail {
   width: 330px;
   height: 315px;
-  margin: 50px 28px 18px 171px;
+  margin: 50px auto; /* Center the element horizontally and provide top margin */
   padding: 31px 75px 30px 74px;
   border: solid 1px #e8e8e8;
   background-color: #fff;
 }
 
+.basicInfo {
+  width: 80%; /* Adjust the width as needed */
+  margin: 50px auto; /* Center the element horizontally and provide top margin */
+  font-size: 28px;
+  text-align: left;
+  color: #414141;
+}
+
 .container-fluid {
   margin-left: auto;
   margin-right: auto;
-  width: 50%; /* Adjust the width as needed */
+  width: 80%; /* Adjust the width as needed */
 }
 
 .userImage{
@@ -39,14 +47,6 @@
   text-align: center;
   color: #333;
   cursor: pointer;
-}
-.basicInfo{
-  width: 1000px;
-  height: fit-content;
-  margin: 49px 374px 25px 0px;
-  font-size: 28px;
-  text-align: left;
-  color: #414141;
 }
 .col-form-label{
   font-size: 16px !important;

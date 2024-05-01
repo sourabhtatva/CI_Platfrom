@@ -65,6 +65,7 @@ namespace BackEnd
             services.AddScoped<BALVolunteeringTimesheet>();
             services.AddScoped<BALMissionSkill>();
             services.AddScoped<BALMissionTheme>();
+            services.AddScoped<BALEmail>();
             services.AddScoped<DALLogin>();
             services.AddScoped<DALCMS>();           
             services.AddScoped<DALMission>();
@@ -74,7 +75,9 @@ namespace BackEnd
             services.AddScoped<DALVolunteeringTimesheet>();
             services.AddScoped<DALMissionSkill>();
             services.AddScoped<DALMissionTheme>();
+            services.AddScoped<DALEmail>();
             services.AddScoped<JwtService>();
+
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "BackEnd", Version = "v1" });

@@ -317,7 +317,7 @@ export class UsereditprofileComponent implements OnInit {
         {
             this.toast.success({detail:"SUCCESS",summary:res.data,duration:3000});
             setTimeout(() => {
-              this.router.navigate(['storiesListing']);
+              this.router.navigate(['home']);
             }, 1000);
         }
         else

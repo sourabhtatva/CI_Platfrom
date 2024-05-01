@@ -32,14 +32,25 @@ export class UpdateMissionComponent implements OnInit {
   missionSkillList:any[]=[];
   typeFlag:boolean = false;
   imageListArray : any=[];
-  missionAvilabilitys = ["missionAvilability1","missionAvilability2","missionAvilability3","missionAvilability4","missionAvilability5"]
   constructor(public fb:FormBuilder,public service:AdminsideServiceService,public toastr:ToastrService,public router:Router,public activateRoute:ActivatedRoute,
     public datePipe:DatePipe,private toast:NgToastService) {
-    this.missionId = this.activateRoute.snapshot.paramMap.get("Id");
-    if(this.missionId != 0)
-    {
-      this.FetchDetail(this.missionId);
-    }
+      this.missionId = this.activateRoute.snapshot.paramMap.get("Id");
+      this.editMissionForm = this.fb.group({ // Initialize editMissionForm here
+          id: [''],
+          missionTitle: ['', Validators.compose([Validators.required])],
+          missionDescription: ['', Validators.compose([Validators.required])],
+          countryId: ['', Validators.compose([Validators.required])],
+          cityId: ['', Validators.compose([Validators.required])],
+          startDate: ['', Validators.compose([Validators.required])],
+          endDate: ['', Validators.compose([Validators.required])],
+          totalSheets: [''],
+          missionThemeId: ['', Validators.compose([Validators.required])],
+          missionSkillId: ['', Validators.compose([Validators.required])],
+          missionImages: [''],
+      });
+      if (this.missionId != 0) {
+          this.FetchDetail(this.missionId);
+      }
    }
 
   ngOnInit(): void {
@@ -120,21 +131,14 @@ export class UpdateMissionComponent implements OnInit {
               id:[this.editData.id],
               missionTitle:[this.editData.missionTitle,Validators.compose([Validators.required])],
               missionDescription:[this.editData.missionDescription,Validators.compose([Validators.required])],
-              missionOrganisationName:[this.editData.missionOrganisationName,Validators.compose([Validators.required])],
-              missionOrganisationDetail:[this.editData.missionOrganisationDetail,Validators.compose([Validators.required])],
               countryId:[this.editData.countryId,Validators.compose([Validators.required])],
               cityId:[this.editData.cityId,Validators.compose([Validators.required])],
               startDate:[this.editData.startDate,Validators.compose([Validators.required])],
               endDate:[this.editData.endDate,Validators.compose([Validators.required])],
-              missionType:[this.editData.missionType,Validators.compose([Validators.required])],
               totalSheets:[this.editData.totalSheets,Validators.compose([Validators.required])],
-              registrationDeadLine:[this.editData.registrationDeadLine,Validators.compose([Validators.required])],
               missionThemeId:[this.editData.missionThemeId,Validators.compose([Validators.required])],
               missionSkillId:[this.editData.missionSkillId.split(','),Validators.compose([Validators.required])],
-              missionImages:[''],
-              missionDocuments:[''],
-              missionVideoUrl:[this.editData.missionVideoUrl],
-              missionAvilability:[this.editData.missionAvilability,Validators.compose([Validators.required])]
+              missionImages:[''],              
           });
           this.service.CityList(this.editData.countryId).subscribe((data:any)=>{
                 this.cityList = data.data;
@@ -147,30 +151,17 @@ export class UpdateMissionComponent implements OnInit {
             }
 
           }
-          if(this.editData.missionDocuments){
-            this.missionDocName = this.service.imageUrl + '/' + this.editData.missionDocuments
-            this.missionDocName = JSON.stringify(this.missionDocName).split("\\").pop();
-          }
-          if(this.editData.missionType=='Time')
-          {
-            this.typeFlag = true;
-          }
       });
   }
   get countryId() { return this.editMissionForm.get('countryId') as FormControl; }
   get cityId() { return this.editMissionForm.get('cityId') as FormControl; }
   get missionTitle() { return this.editMissionForm.get('missionTitle') as FormControl; }
-  get missionOrganisationName() { return this.editMissionForm.get('missionOrganisationName') as FormControl; }
   get missionDescription() { return this.editMissionForm.get('missionDescription') as FormControl; }
-  get missionOrganisationDetail() { return this.editMissionForm.get('missionOrganisationDetail') as FormControl; }
   get startDate() { return this.editMissionForm.get('startDate') as FormControl; }
   get endDate() { return this.editMissionForm.get('endDate') as FormControl; }
-  get missionType() { return this.editMissionForm.get('missionType') as FormControl; }
   get missionThemeId() { return this.editMissionForm.get('missionThemeId') as FormControl; }
   get missionSkillId() { return this.editMissionForm.get('missionSkillId') as FormControl; }
   get missionImages() { return this.editMissionForm.get('missionImages') as FormControl; }
-  get missionDocuments() { return this.editMissionForm.get('missionDocuments') as FormControl; }
-  get missionAvilability() { return this.editMissionForm.get('missionAvilability') as FormControl; }
 
 
   OnSelectedImage(event:any){
@@ -198,32 +189,14 @@ export class UpdateMissionComponent implements OnInit {
       this.isFileUpload = true;
     }
   }
-OnSelectedDocument(event:any){
-  if(event.target.files && event.target.files[0])
-  {
-    this.formDoc = new FormData();
-    var reader = new FileReader();
-    reader.readAsDataURL(event.target.files[0]);
-    reader.onload =(e:any)=>{
-        this.missionDocName = e.target.result;
-        this.missionDocText = 'Document Upload Successfully..';
-    }
 
-    for(let i=0;i<event.target.files.length;i++)
-    {
-        this.formDoc.append('file',event.target.files[i]);
-        this.formDoc.append('moduleName','MissionDoc');
-    }
-    this.isDocUpload = true;
-  }
-}
 async OnSubmit(){debugger;
   this.formValid = true;
   let value = this.editMissionForm.value;
   let updateImageUrl = '';
-  let updatemissionDoc = '';
-  var SkillLists = value.missionSkillId.join(",");
+  var SkillLists = Array.isArray(value.missionSkillId) ? value.missionSkillId.join(",") : "";
   value.missionSkillId = SkillLists;
+  console.log(this.editMissionForm)
 
   if(this.editMissionForm.valid)
   {
@@ -234,13 +207,6 @@ async OnSubmit(){debugger;
         }
       },err=>this.toast.error({detail:"ERROR",summary:err.error.message}));
     }
-    if(this.isDocUpload){
-      await this.service.UploadDoc(this.formDoc).pipe().toPromise().then((res:any)=>{
-        if(res.success){
-          updatemissionDoc = res.data;
-        }
-      },err=>this.toast.error({detail:"ERROR",summary:err.error.message}));
-    }
     if(this.isFileUpload)
     {
       value.missionImages = updateImageUrl;
@@ -248,14 +214,6 @@ async OnSubmit(){debugger;
     else
     {
       value.missionImages = this.editData.missionImages;
-    }
-    if(this.isDocUpload)
-    {
-      value.missionDocuments = updatemissionDoc;
-    }
-    else
-    {
-      value.missionDocuments = this.editData.missionDocuments;
     }
     this.service.UpdateMission(value).subscribe((data:any)=>{
           if(data.result == 1)

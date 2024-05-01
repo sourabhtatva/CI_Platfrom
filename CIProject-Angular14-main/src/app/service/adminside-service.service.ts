@@ -4,9 +4,6 @@ import { City, CMS, Country, Mission } from '../model/cms.model';
 import { Observable } from 'rxjs';
 import { ToastrService } from 'ngx-toastr';
 import { Router } from '@angular/router';
-import { Story } from '../model/story.model';
-import { UserDetail } from '../model/user.model';
-import { THRESHOLD_DIFF } from '@progress/kendo-angular-popup/services/scrollable.service';
 import { MissionApplication } from '../model/missionApplication.model';
 import { MissionTheme } from '../model/missionTheme.model';
 import { MissionSkill } from '../model/missionSkill.model';
@@ -87,23 +84,6 @@ export class AdminsideServiceService {
   }
   DeleteMission(data: any) {
     return this.http.delete(`${this.apiUrl}/Mission/DeleteMission/${data}`);
-  }
-
-  //Story
-  StoryList(): Observable<Story[]> {
-    return this.http.get<Story[]>(`${this.apiUrl}/Story/AdminSideStoryList`);
-  }
-  UpdaeStorySatus(data: Story) {
-    return this.http.post(`${this.apiUrl}/Story/StoryStatusActive`, data);
-  }
-  DeleteStory(data: any) {
-    return this.http.delete(`${this.apiUrl}/Story/DeleteStory/${data}`);
-  }
-
-  StoryDetail(id: number): Observable<Story[]> {
-    return this.http.get<Story[]>(
-      `${this.apiUrl}/Story/StoryDetailByIdAdmin/${id}`
-    );
   }
 
   //Mission Application

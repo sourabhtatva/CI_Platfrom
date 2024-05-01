@@ -46,7 +46,9 @@ namespace BackEnd.Entity
         [NotMapped]
         public string MissionStatus { get; set; }
         [NotMapped]
-        public string MissionApplyStatus { get; set; }  
+        public string MissionApplyStatus { get; set; }
+        [NotMapped]
+        public string MissionApproveStatus { get; set; }
         [NotMapped]
         public string MissionDateStatus { get; set; }       
         [NotMapped]

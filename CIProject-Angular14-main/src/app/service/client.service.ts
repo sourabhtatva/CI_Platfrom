@@ -3,7 +3,6 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { City, Country, Mission } from '../model/cms.model';
 import { MissionApplication } from '../model/missionApplication.model';
-import { Story } from '../model/story.model';
 import { user, UserDetail } from '../model/user.model';
 import { VolunteeringGoals, VolunteeringHours } from '../model/volunteering.model';
 
@@ -38,17 +37,6 @@ export class ClientService {
   UploadImage(data:any){
     return this.http.post(`${this.apiUrl}/Common/UploadImage`,data);
   }
-  AddStory(data:Story){
-    return this.http.post(`${this.apiUrl}/Story/AddStory`,data);
-  }
-  StoryList():Observable<Story[]>{
-    return this.http.get<Story[]>(`${this.apiUrl}/Story/ClientSideStoryList`);
-  }
-
-  StoryDetail(id:number):Observable<Story[]>{
-    return this.http.get<Story[]>(`${this.apiUrl}/Story/StoryDetailById/${id}`);
-  }
-
 
   LoginUserDetailById(id:any):Observable<user[]>{
     return this.http.get<user[]>(`${this.apiUrl}/Login/LoginUserDetailById/${id}`);
@@ -94,6 +82,9 @@ export class ClientService {
     return this.http.get<VolunteeringHours[]>(`${this.apiUrl}/VolunteeringTimesheet/GetVolunteeringHoursListById/${id}`);
   }
 
+  VolunteeringMissionList(id:number):Observable<Mission[]>{
+    return this.http.get<Mission[]>(`${this.apiUrl}/VolunteeringTimesheet/VolunteeringMissionList/${id}`);
+  }
   AddVolunteeringHours(data:VolunteeringHours){
     return this.http.post(`${this.apiUrl}/VolunteeringTimesheet/AddVolunteeringHours`,data);
   }

@@ -11,7 +11,7 @@
              <input type="text" [(ngModel)]="searchText" class="searchBox icon" placeholder="Search"/>
            </div>
            <div class="col-sm-8" style="display: flex;justify-content: flex-end;">
-               <button class="btnAdd"><span class="btnAddIcon"><i class="fa fa-plus"></i></span><span class="add">Add</span></button>
+               <button class="btnAdd" routerLink="../addUser"><span class="btnAddIcon"><i class="fa fa-plus"></i></span><span class="add">Add</span></button>
            </div>
        </div>
        <div class="row">
@@ -39,8 +39,8 @@
                  <td>{{item.department}}</td>
                  <td style="color:#14c506;">{{item.status ? 'active':'inactive'}}</td>
                  <td style="text-align: right;">
-                   <button class="btnedit"> <i class="fa fa-edit "></i> </button>
-                   <button class="btndelete" (click)="OpenDeleteUserModal(item.userId)"> <i class="fa fa-trash-o"></i> </button>
+                  <button class="btnedit" routerLink="../editUser/{{item.id}}"> <i class="fa fa-edit "></i> </button>
+                  <button class="btndelete" (click)="OpenDeleteUserModal(item.userId)"> <i class="fa fa-trash-o"></i> </button>
                  </td>
                </tr>
                <tr *ngIf="result.length === 0">

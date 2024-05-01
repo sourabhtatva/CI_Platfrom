@@ -1,4 +1,5 @@
 ﻿using BackEnd.BAL;
+using BackEnd.DAL;
 using BackEnd.DAL.Helper;
 using BackEnd.Entity;
 using Microsoft.AspNetCore.Authorization;
@@ -49,6 +50,42 @@ namespace BackEnd.Controllers
             {
              
                 result.Data = _balLogin.Register(user);
+                result.Result = ResponseStatus.Success;
+            }
+            catch (Exception ex)
+            {
+                result.Result = ResponseStatus.Error;
+                result.Message = ex.Message;
+            }
+            return result;
+        }
+
+        [HttpGet]
+        [Route("GetUserById/{id}")]
+        [Authorize]
+        public ResponseResult GetUserById(int id)
+        {
+            try
+            {
+                result.Data = _balLogin.GetUserById(id);
+                result.Result = ResponseStatus.Success;
+            }
+            catch (Exception ex)
+            {
+                result.Result = ResponseStatus.Error;
+                result.Message = ex.Message;
+            }
+            return result;
+        }
+
+        [HttpPost]
+        [Route("UpdateUser")]
+        [Authorize]
+        public ResponseResult UpdateUser(User user)
+        {
+            try
+            {
+                result.Data = _balLogin.UpdateUser(user);
                 result.Result = ResponseStatus.Success;
             }
             catch (Exception ex)

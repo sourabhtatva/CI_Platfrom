@@ -23,6 +23,7 @@
                  <th scope="col" class="col-1">User Id</th>
                  <th scope="col" class="col-2">User Name</th>
                  <th scope="col" class="col-2">Application Date</th>
+                 <th scope="col" class="col-2">Status</th>
                  <th scope="col" class="col-1">Action</th>
                </tr>
              </thead>
@@ -34,6 +35,7 @@
                  <td>{{item.userId}}</td>
                  <td>{{item.userName}}</td>
                  <td>{{item.appliedDate | date:'dd/MM/yyyy'}}</td>
+                 <td>{{getStatus(item.status)}}</td>
                  <td>
                    <button class="btnedit btn btn-success" (click)="ApproveMissionApplication(item)"><i class="fa fa-check-circle-o"></i> </button>
                    <button  class="btndelete btn btn-success" (click)="DeleteMissionApplication(item)"><i class="fa fa-times-circle-o"></i> </button>

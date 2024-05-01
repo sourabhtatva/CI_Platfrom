@@ -11,14 +11,19 @@ import { AdminsideServiceService } from 'src/app/service/adminside-service.servi
 export class MissionApplicationComponent implements OnInit {
   applicationList:any[]=[];
   searchText:any="";
-  page:number = 1;
-  itemsPerPages:number = 10;
+  page: number = 1;
+  itemsPerPages: number = 5;
   applicationId:any;
   constructor(public service:AdminsideServiceService,private toast:NgToastService,private route:Router) { }
 
   ngOnInit(): void {
     this.FetchMissionApplicationList();
   }
+
+  getStatus(status) {
+    return status ? 'Approve' : 'Pending';
+  }
+
   FetchMissionApplicationList(){
     this.service.MissionApplicationList().subscribe((data:any)=>{
       if(data.result == 1)
@@ -31,6 +36,7 @@ export class MissionApplicationComponent implements OnInit {
       }
     },err=>this.toast.error({detail:"ERROR",summary:err.message,duration:3000}));
   }
+
   ApproveMissionApplication(value: any) {
     this.service.MissionApplicationApprove(value).subscribe(
       (data: any) => {

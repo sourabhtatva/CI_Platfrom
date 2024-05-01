@@ -7,9 +7,6 @@ import { ResetPasswordComponent } from './LoginRegister/reset-password/reset-pas
 import { HomeComponent } from './NavBar/home/home.component';
 import { NewMissionComponent } from './new-mission/new-mission.component';
 import { VolunVolunteeringMissionComponent } from './volun-volunteering-mission/volun-volunteering-mission.component';
-import { StoriesListingComponent } from './stories-listing/stories-listing.component';
-import { ShareyourstoryComponent } from './shareyourstory/shareyourstory.component';
-import { StoryDetailComponent } from './story-detail/story-detail.component';
 import { UsereditprofileComponent } from './usereditprofile/usereditprofile.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { VolunteeringTimesheetComponent } from './volunteering-timesheet/volunteering-timesheet.component';
@@ -24,9 +21,6 @@ const routes: Routes = [
   {path:'home',component:HomeComponent},
   {path:'addNewMission',component:NewMissionComponent},
   {path:'volunteeringMission/:missionId',component:VolunVolunteeringMissionComponent,canActivate:[AuthGuard]},
-  {path:'storiesListing',component:StoriesListingComponent},
-  {path:'shareyourstory',component:ShareyourstoryComponent,canActivate:[AuthGuard]},
-  {path:'storyDetail/:Id',component:StoryDetailComponent},
   {path:'userProfile/:userId',component:UsereditprofileComponent,canActivate:[AuthGuard]},
   {path:'privacyPolicy',component:PrivacyPolicyComponent},
   {path:'volunteeringTimesheet',component:VolunteeringTimesheetComponent,canActivate:[AuthGuard]},

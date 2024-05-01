@@ -19,11 +19,8 @@ import { NewMissionComponent } from './new-mission/new-mission.component';
 import { VolunVolunteeringMissionComponent } from './volun-volunteering-mission/volun-volunteering-mission.component';
 import { NgxGalleryModule } from '@kolkov/ngx-gallery';
 import {TabsModule} from 'ngx-bootstrap/tabs';
-import { StoriesListingComponent } from './stories-listing/stories-listing.component';
-import { ShareyourstoryComponent } from './shareyourstory/shareyourstory.component';
 import { BsDatepickerModule } from 'ngx-bootstrap/datepicker';
 import { NgxEditorModule } from 'ngx-editor';
-import { StoryDetailComponent } from './story-detail/story-detail.component';
 import { UsereditprofileComponent } from './usereditprofile/usereditprofile.component';
 import { PrivacyPolicyComponent } from './privacy-policy/privacy-policy.component';
 import { ListBoxModule } from '@progress/kendo-angular-listbox';
@@ -33,7 +30,6 @@ import { ToolBarModule } from '@progress/kendo-angular-toolbar';
 import { CollapseModule } from 'ngx-bootstrap/collapse';
 import { BsDropdownModule } from 'ngx-bootstrap/dropdown';
 import { VolunteeringTimesheetComponent } from './volunteering-timesheet/volunteering-timesheet.component';
-import {AdminSideModule} from './admin-side/admin-side.module';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { TokenInterceptor } from './Interceptors/token.interceptor';
 import { NgToastModule } from 'ng-angular-popup';
@@ -41,6 +37,8 @@ import { NgxPaginationModule } from 'ngx-pagination';
 import { SearchPipe } from './Pipe/search.pipe';
 import { NgxStarRatingModule } from 'ngx-star-rating';
 import { UiSwitchModule } from 'ngx-toggle-switch';
+import { DatePipe } from '@angular/common';
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,13 +52,11 @@ import { UiSwitchModule } from 'ngx-toggle-switch';
     FooterComponent,
     NewMissionComponent,
     VolunVolunteeringMissionComponent,
-    StoriesListingComponent,
-    ShareyourstoryComponent,
-    StoryDetailComponent,
     UsereditprofileComponent,
     PrivacyPolicyComponent,
     VolunteeringTimesheetComponent,
-    SearchPipe
+    SearchPipe,
+    
 
   ],
   imports: [
@@ -81,7 +77,6 @@ import { UiSwitchModule } from 'ngx-toggle-switch';
     ToolBarModule,
     CollapseModule.forRoot(),
     BsDropdownModule.forRoot(),
-    AdminSideModule,
     NgbModule,
     NgToastModule,
     NgxPaginationModule,
@@ -92,7 +87,7 @@ import { UiSwitchModule } from 'ngx-toggle-switch';
     provide:HTTP_INTERCEPTORS,
     useClass:TokenInterceptor,
     multi:true
-}],
+},DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
