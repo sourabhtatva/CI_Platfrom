@@ -79,7 +79,7 @@ export class AddMissionComponent implements OnInit {
 
   CountryList() {
     this.service.CountryList().subscribe((data: any) => {
-      if (data.result == 1) {
+      if (data.data != null) {
         this.countryList = data.data;
       } else {
         this.toast.error({ detail: "ERROR", summary: data.message, duration: 3000 });
@@ -90,7 +90,7 @@ export class AddMissionComponent implements OnInit {
   CityList(countryId: any) {
     countryId = countryId.target.value;
     this.service.CityList(countryId).subscribe((data: any) => {
-      if (data.result == 1) {
+      if (data.data != null) {
         this.cityList = data.data;
       } else {
         this.toast.error({ detail: "ERROR", summary: data.message, duration: 3000 });
@@ -144,32 +144,49 @@ export class AddMissionComponent implements OnInit {
     this.formValid = true;
     let imageUrl: any[] = [];
     let value = this.addMissionForm.value;
-    value.missionSkillId = Array.isArray(value.missionSkillId) ? value.missionSkillId.join(',') : value.missionSkillId;
-    if (this.addMissionForm.valid) {
-      if (this.imageListArray.length > 0) {
-        await this.service.UploadImage(this.formData).pipe().toPromise().then((res: any) => {
-          if (res.success) {
-            imageUrl = res.data;
-          }
-        }, err => { this.toast.error({ detail: "ERROR", summary: err.message, duration: 3000 }) });
-      }
-      let imgUrlList = imageUrl.map(e => e.replace(/\s/g, "")).join(",");
-      value.missionImages = imgUrlList;
-      this.service.AddMission(value).subscribe((data: any) => {
 
-        if (data.result == 1) {
-          this.toast.success({ detail: "SUCCESS", summary: data.data, duration: 3000 });
-          setTimeout(() => {
-            this.router.navigate(['admin/mission']);
-          }, 1000);
+    // Convert missionSkillId to a comma-separated string if it is an array
+    value.missionSkillId = Array.isArray(value.missionSkillId) ? value.missionSkillId.join(',') : value.missionSkillId;
+
+    if (this.addMissionForm.valid) {
+        if (this.imageListArray.length > 0) {
+            try {
+                const res: any = await this.service.UploadImage(this.formData).toPromise();
+                if (res.success) {
+                    imageUrl = res.data;
+                } else {
+                    this.toast.error({ detail: "ERROR", summary: "Image upload failed", duration: 3000 });
+                    return;
+                }
+            } catch (err) {
+                this.toast.error({ detail: "ERROR", summary: err.message, duration: 3000 });
+                return;
+            }
         }
-        else {
-          this.toast.error({ detail: "ERROR", summary: data.message, duration: 3000 });
-        }
-      });
-      this.formValid = false;
+
+        // Process image URLs
+        let imgUrlList = imageUrl.map(e => e.replace(/\s/g, "")).join(",");
+        value.missionImages = imgUrlList;
+
+        this.service.AddMission(value).subscribe((data: any) => {
+            if (data.result === 1) {
+                this.toast.success({ detail: "SUCCESS", summary: data.data, duration: 3000 });
+                setTimeout(() => {
+                    this.router.navigate(['admin/mission']);
+                }, 1000);
+            } else {
+                this.toast.error({ detail: "ERROR", summary: data.message, duration: 3000 });
+            }
+        }, err => {
+            this.toast.error({ detail: "ERROR", summary: err.message, duration: 3000 });
+        });
+
+        this.formValid = false;
+    } else {
+        this.toast.error({ detail: "ERROR", summary: "Form is invalid", duration: 3000 });
     }
-  }
+}
+
 
   OnCancel() {
     this.router.navigateByUrl('admin/mission');

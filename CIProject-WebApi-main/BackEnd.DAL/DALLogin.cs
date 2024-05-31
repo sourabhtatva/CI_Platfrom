@@ -45,6 +45,51 @@ namespace BackEnd.DAL
                 throw;
             }
         }
+        public string RegisterUserDetail(int id)
+        {
+            User user = new User();
+            user = _cIDbContext.User.FirstOrDefault(u => u.Id == id && !u.IsDeleted);
+            if (user != null)
+            {
+                string maxEmployeeIdStr = _cIDbContext.UserDetail.Max(ud => ud.EmployeeId);
+                int maxEmployeeId = 0;
+
+                // Convert the maximum EmployeeId to an integer
+                if (!string.IsNullOrEmpty(maxEmployeeIdStr))
+                {
+                    if (int.TryParse(maxEmployeeIdStr, out int parsedEmployeeId))
+                    {
+                        maxEmployeeId = parsedEmployeeId;
+                    }
+                    else
+                    {
+                        // Handle conversion error
+                        throw new Exception("Error converting EmployeeId to integer.");
+                    }
+                }
+
+                // Increment the maximum EmployeeId by 1 for the new user
+                int newEmployeeId = maxEmployeeId + 1;
+                var newUserDetail = new UserDetail
+                {
+                    UserId = user.Id,
+                    FirstName = user.FirstName,
+                    LastName = user.LastName,
+                    PhoneNumber = user.PhoneNumber,
+                    EmailAddress = user.EmailAddress,
+                    UserType = user.UserType,
+                    Name = user.FirstName,
+                    Surname = user.LastName,
+                    EmployeeId = newEmployeeId.ToString(),
+                    Department = "IT",
+                    Status = true
+                };
+
+                _cIDbContext.UserDetail.Add(newUserDetail);
+                _cIDbContext.SaveChanges();
+            }
+            return "User register successfully.";
+        }
 
         public string Register(User user)
         {
@@ -56,56 +101,36 @@ namespace BackEnd.DAL
 
                 if (!emailExists)
                 {
-                    string maxEmployeeIdStr = _cIDbContext.UserDetail.Max(ud => ud.EmployeeId);
-                    int maxEmployeeId = 0;
-
-                    // Convert the maximum EmployeeId to an integer
-                    if (!string.IsNullOrEmpty(maxEmployeeIdStr))
+                    int maxIdStr = _cIDbContext.User.Max(ud => ud.Id);
+                    int maxId = 0;
+                    if (maxIdStr > maxId)
                     {
-                        if (int.TryParse(maxEmployeeIdStr, out int parsedEmployeeId))
-                        {
-                            maxEmployeeId = parsedEmployeeId;
-                        }
-                        else
-                        {
-                            // Handle conversion error
-                            throw new Exception("Error converting EmployeeId to integer.");
-                        }
+                        maxId = maxIdStr;
                     }
+                    int newmaxId = maxId + 1;
 
-                    // Increment the maximum EmployeeId by 1 for the new user
-                    int newEmployeeId = maxEmployeeId + 1;
+
 
                     // Create a new user entity
                     var newUser = new User
                     {
+
                         FirstName = user.FirstName,
                         LastName = user.LastName,
                         PhoneNumber = user.PhoneNumber,
                         EmailAddress = user.EmailAddress,
                         Password = user.Password,
                         UserType = user.UserType,
-                        CreatedDate = DateTime.Now,
+                        CreatedDate = DateTime.UtcNow,
                         IsDeleted = false
                     };
-                    var newUserDetail = new UserDetail
-                    {
-                        UserId = user.Id,
-                        FirstName = user.FirstName,
-                        LastName = user.LastName,
-                        PhoneNumber = user.PhoneNumber,
-                        EmailAddress = user.EmailAddress,
-                        UserType = user.UserType,
-                        Name = user.FirstName,
-                        Surname = user.LastName,
-                        EmployeeId = newEmployeeId.ToString(),
-                        Department =  "IT",
-                        Status = true
-                    };
+                   
                     // Add the new user to the database
                     _cIDbContext.User.Add(newUser);
-                    _cIDbContext.UserDetail.Add(newUserDetail);
                     _cIDbContext.SaveChanges();
+                    user = _cIDbContext.User.FirstOrDefault(u => u.EmailAddress == user.EmailAddress && !u.IsDeleted);
+                    RegisterUserDetail(user.Id);
+
 
                     result = "User register successfully.";
                 }

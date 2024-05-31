@@ -18,17 +18,16 @@ export class AdminsideServiceService {
   ) {}
   // apiUrl:string='http://localhost:63943/api';
   apiUrl: string = 'http://localhost:56577/api';
-  imageUrl: string = 'http://localhost:56577';
+imageUrl: string = 'http://localhost:56577';
 
-  //User
-  UserList(): Observable<any[]> {
-    return this.http.get<any[]>(`${this.apiUrl}/AdminUser/UserDetailList`);
-  }
-  DeleteUser(userId: any) {
-    return this.http.delete(
-      `${this.apiUrl}/AdminUser/DeleteUserAndUserDetail/${userId}`
-    );
-  }
+// User
+UserList(): Observable<any[]> {
+  return this.http.get<any[]>(`${this.apiUrl}/AdminUser/UserDetailList`);
+}
+
+DeleteUser(userId: any): Observable<any> {
+  return this.http.delete(`${this.apiUrl}/AdminUser/DeleteUserAndUserDetail/${userId}`);
+}
 
   //CMS
   CMSList(): Observable<CMS[]> {
@@ -76,9 +75,9 @@ export class AdminsideServiceService {
   CityList(countryId: any): Observable<City[]> {
     return this.http.get<City[]>(`${this.apiUrl}/Common/CityList/${countryId}`);
   }
-  AddMission(data: Mission) {
-    return this.http.post(`${this.apiUrl}/Mission/AddMission`, data);
-  }
+  AddMission(missionData: any): Observable<any> {
+    return this.http.post(`${this.apiUrl}/Common/AddMission`,missionData);
+}
   UpdateMission(data: Mission) {
     return this.http.post(`${this.apiUrl}/Mission/UpdateMission`, data);
   }
